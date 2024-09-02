@@ -41,7 +41,7 @@ void fetchDataAndProcess() {
         std::string jsonStr = s.str();
         if (Json::parseFromStream(readerBuilder, s, &jsonData, &errs)) {
             const Json::Value& entries = jsonData["entries"];
-            Database db("database/players.db");
+            Database db("frontend/players.db");
 
             int totalPlayers = entries.size();
             for (const auto& entry : entries) {
