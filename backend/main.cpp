@@ -41,7 +41,7 @@ void fetchDataAndProcess() {
         std::string jsonStr = s.str();
         if (Json::parseFromStream(readerBuilder, s, &jsonData, &errs)) {
             const Json::Value& entries = jsonData["entries"];
-            Database db("frontend/players.db");
+            Database db("database/players.db");
 
             int totalPlayers = entries.size();
             for (const auto& entry : entries) {
@@ -50,8 +50,8 @@ void fetchDataAndProcess() {
                 int score = entry["score"].asInt();
                 int64_t steamid = entry["steamid"].asInt64();
 
-                int adjustedScore = score + ceil((totalPlayers + 1 - rank) / (double)totalPlayers);
-                db.updatePlayer(steamid, name, adjustedScore, rank);
+                int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
+                db.updatePlayer(steamid, name, adjustedScore, score);
             }
         } else {
             std::cerr << "Failed to parse JSON: " << errs << std::endl;
