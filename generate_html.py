@@ -19,13 +19,15 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         <tr>
             <th>Name</th>
             <th>Rank</th>
-            <th>Score</th>
+            <th>Points</th>
+            <th>Total Score</th>
         </tr>
         {% for player in players %}
         <tr>
             <td>{{ player.name }}</td>
             <td>{{ player.rank }}</td>
-            <td>{{ player.score }}</td>
+            <td>{{ player.points }}</td>
+            <td>{{ player.total_score }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -51,7 +53,7 @@ def fetch_players():
             killcount
         FROM players
     """)
-    players = [{'rank': row[0], 'name': row[1], 'points': row[2], 'total score': row[3]} for row in cursor.fetchall()]
+    players = [{'rank': row[0], 'name': row[1], 'points': row[2], 'total_score': row[3]} for row in cursor.fetchall()]
     conn.close()
     return players
 
