@@ -43,8 +43,15 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 def fetch_players():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT name, rank, score FROM players ORDER BY score DESC")
-    players = [{'name': row[0], 'rank': row[1], 'score': row[2]} for row in cursor.fetchall()]
+    cursor.execute("""
+        SELECT 
+            ROW_NUMBER() OVER (ORDER BY score DESC) as row_index,
+            name,
+            score,
+            killcount
+        FROM players
+    """)
+    players = [{'rank': row[0], 'name': row[1], 'points': row[2], 'total score': row[3]} for row in cursor.fetchall()]
     conn.close()
     return players
 
