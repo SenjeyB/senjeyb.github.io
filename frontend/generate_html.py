@@ -41,7 +41,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 </html>'''
 
 def fetch_players():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('database/players.db')
     cursor = conn.cursor()
     cursor.execute("SELECT name, rank, score FROM players ORDER BY score DESC")
     players = [{'name': row[0], 'rank': row[1], 'score': row[2]} for row in cursor.fetchall()]
