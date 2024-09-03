@@ -35,6 +35,8 @@ void fetchDataAndProcess() {
     
             res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
+                curl_easy_cleanup(curl);
+                curl = curl_easy_init();
                 break;
             } else {
                 try {
@@ -66,6 +68,8 @@ void fetchDataAndProcess() {
     
             res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
+                curl_easy_cleanup(curl);
+                curl = curl_easy_init();
                 break;
             } else {
                 try {
