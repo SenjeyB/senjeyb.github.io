@@ -3,9 +3,6 @@ project(backend)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(nlohmann_json 3.2.0 REQUIRED)
 add_executable(backend main.cpp database.cpp)
-find_package(CURL REQUIRED)
-find_package(JsonCpp REQUIRED)
-target_include_directories(backend PRIVATE ${JsonCpp_INCLUDE_DIRS})
-target_link_libraries(backend PRIVATE ${JsonCpp_LIBRARIES})
-target_link_libraries(backend PRIVATE sqlite3 CURL::libcurl)
+target_link_libraries(backend sqlite3 CURL::libcurl nlohmann_json::nlohmann_json)
