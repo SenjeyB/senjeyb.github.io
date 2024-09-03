@@ -29,17 +29,19 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <h1>Recent Daily Stats</h1>
     <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
-    <div class="search-container">
-        <input type="text" id="page-input" placeholder="Select page" />
-        <button onclick="searchPage({{ total_pages }})">Search</button>
-    </div>
-    <div class="navigation">
-        {% if page > 1 %}
-            <a href="page{{ page - 1 }}.html">Previous</a>
-        {% endif %}
-        {% if page < total_pages %}
-            <a href="page{{ page + 1 }}.html">Next</a>
-        {% endif %}
+    <div class="top-controls">
+        <div class="search-container">
+            <input type="text" id="page-input" placeholder="Select page" />
+            <button onclick="searchPage({{ total_pages }})">Search</button>
+        </div>
+        <div class="navigation">
+            {% if page > 1 %}
+                <a href="page{{ page - 1 }}.html">Previous</a>
+            {% endif %}
+            {% if page < total_pages %}
+                <a href="page{{ page + 1 }}.html">Next</a>
+            {% endif %}
+        </div>
     </div>
     <table>
         <tr>
