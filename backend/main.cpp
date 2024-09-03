@@ -40,7 +40,6 @@ void fetchDataAndProcess() {
                 break;
             } else {
                 try {
-                    std::cout << "Try parse" << std::endl;
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
@@ -52,7 +51,6 @@ void fetchDataAndProcess() {
             curl_easy_cleanup(curl);
             curl = curl_easy_init();
         }
-        std::cout << "Total players " << totalPlayers << std::endl;
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
@@ -88,7 +86,6 @@ void fetchDataAndProcess() {
     
                         int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
                         db.updatePlayer(steamid, name, adjustedScore, score);
-                        std::cout << "id update: " << steamid << std::endl;
                     }
                 } catch (nlohmann::json::parse_error& e) {
                     std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
