@@ -17,7 +17,7 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
-        for(long long p = 1;; p++)
+        for(long long p = 0;; p++)
         {
             std::string readBuffer;
             char postData[10];
@@ -44,6 +44,12 @@ void fetchDataAndProcess() {
     
                     const auto& entries = jsonData["entries"];
                     totalPlayers += entries.size();
+                    if(entries.empty())
+                    {
+                        curl_easy_cleanup(curl);
+                        curl = curl_easy_init();
+                        break;
+                    }
                 } catch (nlohmann::json::parse_error& e) {
                     std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
                 }
@@ -51,7 +57,8 @@ void fetchDataAndProcess() {
             curl_easy_cleanup(curl);
             curl = curl_easy_init();
         }
-        for(long long p = 1;; p++)
+        std::cout << "Total players: " << totalPlayers << std::endl;
+        for(long long p = 0;; p++)
         {
             std::string readBuffer;
             char postData[10];
@@ -77,6 +84,12 @@ void fetchDataAndProcess() {
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
+                    if(entries.empty())
+                    {
+                        curl_easy_cleanup(curl);
+                        curl = curl_easy_init();
+                        break;
+                    }
                     Database db("players.db");
                     for (const auto& entry : entries) {
                         int rank = entry["rank"].get<int>();
