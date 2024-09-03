@@ -47,6 +47,7 @@ void fetchDataAndProcess() {
                 }
             }
             curl_easy_cleanup(curl);
+            curl = curl_easy_init();
         }
         for(int p = 1;; p++)
         {
@@ -87,7 +88,9 @@ void fetchDataAndProcess() {
                 }
             }
             curl_easy_cleanup(curl);
+            curl = curl_easy_init();
         }
+        curl_easy_cleanup(curl);
     }
     curl_global_cleanup();
 }
