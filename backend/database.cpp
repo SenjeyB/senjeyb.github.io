@@ -5,10 +5,7 @@
 class Database {
 public:
     Database(const std::string& dbPath) {
-        if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
-            std::cerr << "Error opening database: " << sqlite3_errmsg(db) << std::endl;
-            db = nullptr;  
-        }
+        sqlite3_open(dbPath.c_str(), &db);
     }
 
     ~Database() {
@@ -27,12 +24,7 @@ public:
 
         if (exists) {
             std::string updateQuery = "UPDATE players SET name = ?, score = score + ?, killcount = killcount + ? WHERE id = ?;";
-            
-            int rc = sqlite3_prepare_v2(db, updateQuery.c_str(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                std::cerr << "Error preparing statement: " << sqlite3_errmsg(db) << std::endl;
-                return; 
-            }
+            sqlite3_prepare_v2(db, updateQuery.c_str(), -1, &stmt, nullptr);
             sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
             sqlite3_bind_int(stmt, 2, newScore);
             sqlite3_bind_int(stmt, 3, score);
@@ -45,9 +37,7 @@ public:
             sqlite3_bind_int(stmt, 3, newScore);
             sqlite3_bind_int(stmt, 4, score);
         }
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            std::cerr << "Error updating player: " << sqlite3_errmsg(db) << std::endl;
-        }
+        sqlite3_step(stmt);
         sqlite3_finalize(stmt);
     }
 
