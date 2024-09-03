@@ -40,7 +40,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <div class="top-controls">
         <div class="search-container">
             <input type="text" id="page-input" placeholder="Select page" />
-            <button onclick="searchPage({{ total_pages }})">Search</button>
+            <button onclick="searchPage({{ total_pages }})">Go</button>
         </div>
         <div class="navigation">
             {% if page > 1 %}
