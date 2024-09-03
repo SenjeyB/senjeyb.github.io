@@ -2,7 +2,7 @@ import sqlite3
 import math
 from jinja2 import Template
 
-DB_PATH = 'frontend/players.db'
+DB_PATH = 'backend/players.db'
 PLAYERS_PER_PAGE = 100
 
 HTML_TEMPLATE = '''<!DOCTYPE html>
