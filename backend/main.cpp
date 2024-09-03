@@ -1,7 +1,7 @@
 #include <iostream>
 #include <curl/curl.h>
-#include <json/json.h>
-#include <math.h>
+#include <nlohmann/json.hpp>
+#include <сmath>
 #include <time.h>
 #include "database.cpp"
 
@@ -15,15 +15,14 @@ void fetchDataAndProcess() {
     CURLcode res;
     std::string readBuffer;
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
-
     if (curl) {
         time_t currentTime = time(NULL);
         long x = (long)(floor(currentTime / 60.0 / 60.0 / 24.0) - 1);
         char postData[50];
         snprintf(postData, sizeof(postData), "d=%ld", x);
-        
+
         curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData);
@@ -36,35 +35,31 @@ void fetchDataAndProcess() {
 
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-        }
-
-        curl_easy_cleanup(curl);
-        curl_global_cleanup();
-
-        Json::Value jsonData;
-        Json::CharReaderBuilder readerBuilder;
-        std::string errs;
-        std::istringstream s(readBuffer);
-        std::string jsonStr = s.str();
-        if (Json::parseFromStream(readerBuilder, s, &jsonData, &errs)) {
-            const Json::Value& entries = jsonData["entries"];
-            Database db("database/players.db");
-
-            int totalPlayers = entries.size();
-            for (const auto& entry : entries) {
-                int rank = entry["rank"].asInt();
-                std::string name = entry["name"].asString();
-                int score = entry["score"].asInt();
-                int64_t steamid = entry["steamid"].asInt64();
-
-                int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
-                db.updatePlayer(steamid, name, adjustedScore, score);
-            }
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
         } else {
-            std::cerr << "Failed to parse JSON: " << errs << std::endl;
+            try {
+                nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
+
+                const auto& entries = jsonData["entries"];
+                Database db("database/players.db");
+
+                int totalPlayers = entries.size();
+                for (const auto& entry : entries) {
+                    int rank = entry["rank"].get<int>();
+                    std::string name = entry["name"].get<std::string>();
+                    int score = entry["score"].get<int>();
+                    int64_t steamid = entry["steamid"].get<int64_t>();
+
+                    int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
+                    db.updatePlayer(steamid, name, adjustedScore, score);
+                }
+            } catch (nlohmann::json::parse_error& e) {
+                std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
+            }
         }
+        curl_easy_cleanup(curl);
     }
+    curl_global_cleanup();
 }
 
 
