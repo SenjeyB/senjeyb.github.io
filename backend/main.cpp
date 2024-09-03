@@ -57,7 +57,6 @@ void fetchDataAndProcess() {
             curl_easy_cleanup(curl);
             curl = curl_easy_init();
         }
-        std::cout << "Total players: " << totalPlayers << std::endl;
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
@@ -96,7 +95,6 @@ void fetchDataAndProcess() {
                         std::string name = entry["name"].get<std::string>();
                         int score = entry["score"].get<int>();
                         int64_t steamid = entry["steamid"].get<int64_t>();
-    
                         int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
                         db.updatePlayer(steamid, name, adjustedScore, score);
                     }
