@@ -1,4 +1,5 @@
 #include <sqlite3.h>
+#include <iostream>
 #include <string>
 
 class Database {
@@ -12,7 +13,6 @@ public:
     }
 
     void updatePlayer(int64_t steamid, const std::string& name, int newScore, int score) {
-        // Check if player exists
         std::string query = "SELECT COUNT(*) FROM players WHERE id = ?;";
         sqlite3_stmt* stmt;
         sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, nullptr);
@@ -29,6 +29,7 @@ public:
             sqlite3_bind_int(stmt, 2, newScore);
             sqlite3_bind_int(stmt, 3, score);
             sqlite3_bind_int64(stmt, 4, steamid);
+            std::cout << "Info added for " << steamid << std::endl;
         } else {
             std::string insertQuery = "INSERT INTO players (id, name, score, killcount) VALUES (?, ?, ?, ?);";
             sqlite3_prepare_v2(db, insertQuery.c_str(), -1, &stmt, nullptr);
