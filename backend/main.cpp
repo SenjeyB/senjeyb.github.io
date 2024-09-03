@@ -21,7 +21,7 @@ void fetchDataAndProcess() {
         for(int p = 1;; p++)
         {
             char postData[50];
-            snprintf(postData, sizeof(postData), "p=%ld", p);
+            snprintf(postData, sizeof(postData), "p=%d", p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
