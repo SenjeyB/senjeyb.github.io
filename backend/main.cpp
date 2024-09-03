@@ -62,4 +62,13 @@ void fetchDataAndProcess() {
     curl_global_cleanup();
 }
 
+int main() {
+    try {
+        fetchDataAndProcess();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception occurred: " << e.what() << std::endl;
+        return 1; 
+    }
+    return 0; 
+}
 
