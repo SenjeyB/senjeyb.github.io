@@ -1,7 +1,7 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
-#include <сmath>
+#include <math.h>
 #include <time.h>
 #include "database.cpp"
 
