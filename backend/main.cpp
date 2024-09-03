@@ -52,6 +52,7 @@ void fetchDataAndProcess() {
 
                     int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
                     db.updatePlayer(steamid, name, adjustedScore, score);
+                    std::cout << "id update: " << steamid << std::endl;
                 }
             } catch (nlohmann::json::parse_error& e) {
                 std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
