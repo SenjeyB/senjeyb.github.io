@@ -10,22 +10,23 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Players - Page {{ page }}</title>
+    <title>Recent Daily Stats</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Top Players - Page {{ page }}</h1>
+    <h1>Recent Daily Stats</h1>
+    <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024  - Page {{ page }}</p>
     <table>
         <tr>
-            <th>Name</th>
             <th>Rank</th>
+            <th>Name</th>
             <th>Points</th>
             <th>Total Score</th>
         </tr>
         {% for player in players %}
         <tr>
-            <td>{{ player.name }}</td>
             <td>{{ player.rank }}</td>
+            <td>{{ player.name }}</td>
             <td>{{ player.points }}</td>
             <td>{{ player.total_score }}</td>
         </tr>
