@@ -18,14 +18,8 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
-        time_t currentTime = time(NULL);
-        long x = (long)(floor(currentTime / 60.0 / 60.0 / 24.0) - 1);
-        char postData[50];
-        snprintf(postData, sizeof(postData), "d=%ld", x);
-
         curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
