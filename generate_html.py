@@ -23,6 +23,14 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             }
             window.location.href = 'page' + page + '.html';
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('page-input');
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    searchPage({{ total_pages }});
+                }
+            });
+        });
     </script>
 </head>
 <body>
