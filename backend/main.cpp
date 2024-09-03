@@ -51,6 +51,7 @@ void fetchDataAndProcess() {
             curl_easy_cleanup(curl);
             curl = curl_easy_init();
         }
+        std::cout << "Total players " << totalPlayers << std::endl;
         for(int p = 1;; p++)
         {
             char postData[50];
