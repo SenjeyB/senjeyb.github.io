@@ -16,7 +16,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 <body>
     <h1>Recent Daily Stats</h1>
     <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
-    <p class="page-number">Page {{ page }} of {{ total_pages }}</p>
+    <p class="summary">Page {{ page }} of {{ total_pages }}</p>
     <div class="navigation">
         {% if page > 1 %}
             <a href="page{{ page - 1 }}.html">Previous</a>
@@ -41,7 +41,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         </tr>
         {% endfor %}
     </table>
-    <p class="page-number">Page {{ page }} of {{ total_pages }}</p>
+    <p class="summary">Page {{ page }} of {{ total_pages }}</p>
     <div class="navigation">
         {% if page > 1 %}
             <a href="page{{ page - 1 }}.html">Previous</a>
