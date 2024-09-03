@@ -41,7 +41,7 @@ void fetchDataAndProcess() {
                 nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
 
                 const auto& entries = jsonData["entries"];
-                Database db("database/players.db");
+                Database db("frontend/players.db");
 
                 int totalPlayers = entries.size();
                 for (const auto& entry : entries) {
