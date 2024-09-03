@@ -17,7 +17,7 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
-        for(long long p = 0;; p++)
+        for(long long p = 1;; p++)
         {
             std::string readBuffer;
             char postData[10];
@@ -58,7 +58,7 @@ void fetchDataAndProcess() {
             curl = curl_easy_init();
         }
         std::cout << "Total players: " << totalPlayers << std::endl;
-        for(long long p = 0;; p++)
+        for(long long p = 1;; p++)
         {
             std::string readBuffer;
             char postData[10];
