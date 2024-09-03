@@ -13,15 +13,15 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* use
 void fetchDataAndProcess() {
     CURL* curl;
     CURLcode res;
-    std::string readBuffer;
     int totalPlayers = 0;
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
         for(long long p = 1;; p++)
         {
+            std::string readBuffer;
             char postData[10];
-            snprintf(postData, sizeof(postData), "p=%ld", p);
+            snprintf(postData, sizeof(postData), "p=%lld", p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -55,8 +55,9 @@ void fetchDataAndProcess() {
         std::cout << "Total players " << totalPlayers << std::endl;
         for(long long p = 1;; p++)
         {
+            std::string readBuffer;
             char postData[10];
-            snprintf(postData, sizeof(postData), "p=%ld", p);
+            snprintf(postData, sizeof(postData), "p=%lld", p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
