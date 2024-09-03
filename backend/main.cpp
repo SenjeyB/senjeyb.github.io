@@ -18,10 +18,10 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
-        for(int p = 1;; p++)
+        for(long long p = 1;; p++)
         {
-            char postData[50];
-            snprintf(postData, sizeof(postData), "p=%d", p);
+            char postData[10];
+            snprintf(postData, sizeof(postData), "p=%ld", p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -40,6 +40,7 @@ void fetchDataAndProcess() {
                 break;
             } else {
                 try {
+                    std::cout << "Try parse" << std::endl;
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
@@ -52,10 +53,10 @@ void fetchDataAndProcess() {
             curl = curl_easy_init();
         }
         std::cout << "Total players " << totalPlayers << std::endl;
-        for(int p = 1;; p++)
+        for(long long p = 1;; p++)
         {
-            char postData[50];
-            snprintf(postData, sizeof(postData), "p=%d", p);
+            char postData[10];
+            snprintf(postData, sizeof(postData), "p=%ld", p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
