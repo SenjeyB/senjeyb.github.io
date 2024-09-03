@@ -14,7 +14,7 @@ void fetchDataAndProcess() {
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
-
+    int totalPlayers = 0;
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
@@ -41,9 +41,37 @@ void fetchDataAndProcess() {
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
-                    Database db("players.db");
+                    totalPlayers += entries.size();
+                } catch (nlohmann::json::parse_error& e) {
+                    std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
+                }
+            }
+            curl_easy_cleanup(curl);
+        }
+        for(int p = 1;; p++)
+        {
+            char postData[50];
+            snprintf(postData, sizeof(postData), "p=%d", p);
+            
+            curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
+            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     
-                    int totalPlayers = entries.size();
+            struct curl_slist* headers = NULL;
+            headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    
+            res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                break;
+            } else {
+                try {
+                    nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
+    
+                    const auto& entries = jsonData["entries"];
+                    Database db("players.db");
                     for (const auto& entry : entries) {
                         int rank = entry["rank"].get<int>();
                         std::string name = entry["name"].get<std::string>();
