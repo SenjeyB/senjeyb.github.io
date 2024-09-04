@@ -88,12 +88,10 @@ def fetch_players():
             ROW_NUMBER() OVER (ORDER BY score DESC) as row_index,
             name,
             score,
-            killcount,
-            entries
+            killcount
         FROM players
     """)
-    players = [{'rank': row[0], 'name': row[1], 'points': round(row[2] / row[4], 2), 'total_score': row[3]} for row in cursor.fetchall()]
-    players.sort(key=lambda x: x['points'], reverse=True)
+    players = [{'rank': row[0], 'name': row[1], 'points': row[2], 'total_score': row[3]} for row in cursor.fetchall()]
     conn.close()
     return players
 
