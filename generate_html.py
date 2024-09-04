@@ -39,7 +39,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <p class="summary">Updates everyday at 3:00 UTC</p>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
     <div class="sort-container">
-        <button onclick="window.location.href='page.html'">Sort by Rating</button>
+        <button onclick="window.location.href='index.html'">Sort by Rating</button>
         <button onclick="window.location.href='sorted_by_score.html'">Sort by Total Score</button>
     </div>
     <div class="top-controls">
