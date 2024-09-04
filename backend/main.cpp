@@ -94,7 +94,7 @@ void fetchDataAndProcess() {
                         int score = entry["score"].get<int>();
                         int64_t steamid = entry["steamid"].get<int64_t>();
                         int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
-                        if(!name.empty()) {
+                        if(!name.empty() && score != -1) {
                             db.updatePlayer(steamid, name, adjustedScore, score);
                         }
                     }
