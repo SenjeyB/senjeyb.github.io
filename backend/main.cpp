@@ -25,7 +25,7 @@ void fetchDataAndProcess() {
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     
@@ -44,9 +44,7 @@ void fetchDataAndProcess() {
     
                     const auto& entries = jsonData["entries"];
                     totalPlayers += entries.size();
-                    std::cout << "Size " << entries.size() << std::endl;
-                    if(entries.size() < 10) {
-                        totalPlayers -= entries.size();
+                    if(entries.empty()) {
                         curl_easy_cleanup(curl);
                         curl = curl_easy_init();
                         break;
@@ -65,7 +63,7 @@ void fetchDataAndProcess() {
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postData.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
     
@@ -83,7 +81,7 @@ void fetchDataAndProcess() {
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
-                    if(entries.size() < 10)
+                    if(entries.empty())
                     {
                         curl_easy_cleanup(curl);
                         curl = curl_easy_init();
