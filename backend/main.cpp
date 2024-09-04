@@ -17,7 +17,7 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
-        long long date = floor(time() / 60 / 60 / 24) - 1;
+        long long date = floor(time(NULL) / 60 / 60 / 24) - 1;
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
