@@ -44,7 +44,8 @@ void fetchDataAndProcess() {
     
                     const auto& entries = jsonData["entries"];
                     totalPlayers += entries.size();
-                    if(entries.empty()) {
+                    if(entries.size() < 10) {
+                        totalPlayers -= entries.size();
                         curl_easy_cleanup(curl);
                         curl = curl_easy_init();
                         break;
@@ -81,7 +82,7 @@ void fetchDataAndProcess() {
                     nlohmann::json jsonData = nlohmann::json::parse(readBuffer);
     
                     const auto& entries = jsonData["entries"];
-                    if(entries.empty())
+                    if(entries.size() < 10)
                     {
                         curl_easy_cleanup(curl);
                         curl = curl_easy_init();
