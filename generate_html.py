@@ -42,15 +42,15 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
     <p class="summary">Updates everyday at 3:00 UTC</p>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
+    <div class="sort-container">
+        <button onclick="window.location.href='{{ 'sorted_by_score.html' if sort_by == 'score' else 'index.html' }}'">
+            Sort by {{ 'Total Score' if sort_by == 'score' else 'Rating' }}
+        </button>
+    </div>
     <div class="top-controls">
         <div class="search-container">
             <input type="text" id="page-input" placeholder="Select page" />
             <button onclick="searchPage({{ total_pages }}, '{{ sort_by }}')">Go</button>
-        </div>
-        <div class="sort-container">
-            <button onclick="window.location.href='{{ 'sorted_by_score.html' if sort_by == 'score' else 'index.html' }}'">
-                Sort by {{ 'Total Score' if sort_by == 'score' else 'Rating' }}
-            </button>
         </div>
         <div class="navigation">
             {% if page > 1 %}
