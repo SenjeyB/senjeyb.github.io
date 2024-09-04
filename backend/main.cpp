@@ -21,7 +21,7 @@ void fetchDataAndProcess() {
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
-            std::string postData = "d=" + std::to_string(date) + " p=" + std::to_string(p);
+            std::string postData = "d=" + std::to_string(date) + "&p=" + std::to_string(p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -59,7 +59,7 @@ void fetchDataAndProcess() {
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
-            std::string postData = "d=" + std::to_string(date) + " p=" + std::to_string(p);
+            std::string postData = "d=" + std::to_string(date) + "&p=" + std::to_string(p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
