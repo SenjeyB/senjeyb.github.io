@@ -36,6 +36,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
 <body>
     <h1>Recent Daily Stats</h1>
     <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
+    <p class="summary">Updates everyday at 3:00 UTC</p>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
     <div class="top-controls">
         <div class="search-container">
@@ -55,7 +56,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         <tr>
             <th>Rank</th>
             <th>Name</th>
-            <th>Points</th>
+            <th>Rating</th>
             <th>Total Score</th>
         </tr>
         {% for player in players %}
@@ -87,10 +88,12 @@ def fetch_players():
             ROW_NUMBER() OVER (ORDER BY score DESC) as row_index,
             name,
             score,
-            killcount
+            killcount,
+            entries
         FROM players
     """)
-    players = [{'rank': row[0], 'name': row[1], 'points': row[2], 'total_score': row[3]} for row in cursor.fetchall()]
+    players = [{'rank': row[0], 'name': row[1], 'points': round(row[2] / row[4], 2), 'total_score': row[3]} for row in cursor.fetchall()]
+    players.sort(key=lambda x: x['points'], reverse=True)
     conn.close()
     return players
 
