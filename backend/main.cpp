@@ -44,7 +44,7 @@ void fetchDataAndProcess() {
     
                     const auto& entries = jsonData["entries"];
                     totalPlayers += entries.size();
-                    std::cout << "Proceed with " << postData << std::endl;
+                    std::cout << "Size " << entries.size() << std::endl;
                     if(entries.size() < 10) {
                         totalPlayers -= entries.size();
                         curl_easy_cleanup(curl);
