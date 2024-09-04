@@ -17,11 +17,11 @@ void fetchDataAndProcess() {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if (curl) {
+        long long date = floor(time() / 60 / 60 / 24) - 1;
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
-            char postData[10];
-            snprintf(postData, sizeof(postData), "p=%lld", p);
+            std::string postData = "d=" + std::toString(date) + "p=" + std::toString(p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -44,8 +44,7 @@ void fetchDataAndProcess() {
     
                     const auto& entries = jsonData["entries"];
                     totalPlayers += entries.size();
-                    if(entries.empty())
-                    {
+                    if(entries.empty()) {
                         curl_easy_cleanup(curl);
                         curl = curl_easy_init();
                         break;
@@ -60,8 +59,7 @@ void fetchDataAndProcess() {
         for(long long p = 1;; p++)
         {
             std::string readBuffer;
-            char postData[10];
-            snprintf(postData, sizeof(postData), "p=%lld", p);
+            std::string postData = "d=" + std::toString(date) + "p=" + std::toString(p);
             
             curl_easy_setopt(curl, CURLOPT_URL, "https://thronebutt.com/api/v0/get/daily");
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
@@ -96,7 +94,9 @@ void fetchDataAndProcess() {
                         int score = entry["score"].get<int>();
                         int64_t steamid = entry["steamid"].get<int64_t>();
                         int adjustedScore = ceil((double)((totalPlayers + 1 - rank) * 1000) / (double)totalPlayers);
-                        db.updatePlayer(steamid, name, adjustedScore, score);
+                        if(!name.empty()) {
+                            db.updatePlayer(steamid, name, adjustedScore, score);
+                        }
                     }
                 } catch (nlohmann::json::parse_error& e) {
                     std::cerr << "Failed to parse JSON: " << e.what() << std::endl;
