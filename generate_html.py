@@ -93,6 +93,7 @@ def fetch_players():
         FROM players
     """)
     players = [{'rank': row[0], 'name': row[1], 'points': round(row[2] / row[4], 2), 'total_score': row[3]} for row in cursor.fetchall()]
+    players.sort(key=lambda x: x['points'], reverse=True)
     conn.close()
     return players
 
