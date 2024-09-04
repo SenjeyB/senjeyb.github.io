@@ -23,7 +23,7 @@ public:
         sqlite3_finalize(stmt);
 
         if (exists) {
-            std::string updateQuery = "UPDATE players SET name = ?, score = score + ?, killcount = killcount + ? WHERE id = ?;";
+            std::string updateQuery = "UPDATE players SET name = ?, score = score + ?, killcount = killcount + ?, entries = entries + 1 WHERE id = ?;";
             sqlite3_prepare_v2(db, updateQuery.c_str(), -1, &stmt, nullptr);
             sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
             sqlite3_bind_int(stmt, 2, newScore);
