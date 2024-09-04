@@ -13,7 +13,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <title>Recent Daily Stats</title>
     <link rel="stylesheet" href="css/styles.css">
     <script>
-        function searchPage(totalPages) {
+        function searchPage(totalPages, sortBy) {
             const input = document.getElementById('page-input').value;
             let page = parseInt(input, 10);
             if (isNaN(page) || page < 1) {
@@ -21,13 +21,17 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
             } else if (page > totalPages) {
                 page = totalPages;
             }
-            window.location.href = 'page' + page + '.html';
+            if (sortBy === 'score') {
+                window.location.href = 'page' + page + '.html';
+            } else if (sortBy === 'total_score') {
+                window.location.href = 'sorted_by_score_page' + page + '.html';
+            }
         }
         document.addEventListener('DOMContentLoaded', function() {
             const input = document.getElementById('page-input');
             input.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
-                    searchPage({{ total_pages }});
+                    searchPage({{ total_pages }}, '{{ sort_by }}');
                 }
             });
         });
@@ -38,21 +42,22 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
     <p class="summary">Updates everyday at 3:00 UTC</p>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
-    <div class="sort-container">
-        <button onclick="window.location.href='index.html'">Sort by Rating</button>
-        <button onclick="window.location.href='sorted_by_score.html'">Sort by Total Score</button>
-    </div>
     <div class="top-controls">
         <div class="search-container">
             <input type="text" id="page-input" placeholder="Select page" />
-            <button onclick="searchPage({{ total_pages }})">Go</button>
+            <button onclick="searchPage({{ total_pages }}, '{{ sort_by }}')">Go</button>
+        </div>
+        <div class="sort-container">
+            <button onclick="window.location.href='{{ 'sorted_by_score.html' if sort_by == 'score' else 'index.html' }}'">
+                Sort by {{ 'Total Score' if sort_by == 'score' else 'Rating' }}
+            </button>
         </div>
         <div class="navigation">
             {% if page > 1 %}
-                <a href="page{{ page - 1 }}.html">Previous</a>
+                <a href="{{ 'sorted_by_score_page' if sort_by == 'total_score' else 'page' }}{{ page - 1 }}.html">Previous</a>
             {% endif %}
             {% if page < total_pages %}
-                <a href="page{{ page + 1 }}.html">Next</a>
+                <a href="{{ 'sorted_by_score_page' if sort_by == 'total_score' else 'page' }}{{ page + 1 }}.html">Next</a>
             {% endif %}
         </div>
     </div>
@@ -75,10 +80,10 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <p class="summary">Page {{ page }} of {{ total_pages }}</p>
     <div class="navigation">
         {% if page > 1 %}
-            <a href="page{{ page - 1 }}.html">Previous</a>
+            <a href="{{ 'sorted_by_score_page' if sort_by == 'total_score' else 'page' }}{{ page - 1 }}.html">Previous</a>
         {% endif %}
         {% if page < total_pages %}
-            <a href="page{{ page + 1 }}.html">Next</a>
+            <a href="{{ 'sorted_by_score_page' if sort_by == 'total_score' else 'page' }}{{ page + 1 }}.html">Next</a>
         {% endif %}
     </div>
 </body>
@@ -100,9 +105,9 @@ def fetch_players(order_by='score'):
     conn.close()
     return players
 
-def generate_html(players, page, total_pages):
+def generate_html(players, page, total_pages, sort_by):
     template = Template(HTML_TEMPLATE)
-    return template.render(players=players, page=page, total_pages=total_pages)
+    return template.render(players=players, page=page, total_pages=total_pages, sort_by=sort_by)
 
 if __name__ == '__main__':
     players = fetch_players(order_by='score')
@@ -113,7 +118,7 @@ if __name__ == '__main__':
         start = (page - 1) * PLAYERS_PER_PAGE
         end = start + PLAYERS_PER_PAGE
         page_players = players[start:end]
-        html_content = generate_html(page_players, page, total_pages)
+        html_content = generate_html(page_players, page, total_pages, sort_by='score')
         with open(f'page{page}.html', 'w', encoding='utf-8') as f:
             f.write(html_content)
 
@@ -125,7 +130,7 @@ if __name__ == '__main__':
         start = (page - 1) * PLAYERS_PER_PAGE
         end = start + PLAYERS_PER_PAGE
         page_players = players_sorted_by_score[start:end]
-        html_content = generate_html(page_players, page, total_pages)
+        html_content = generate_html(page_players, page, total_pages, sort_by='total_score')
         with open(f'sorted_by_score_page{page}.html', 'w', encoding='utf-8') as f:
             f.write(html_content)
 
