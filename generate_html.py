@@ -5,6 +5,8 @@ from jinja2 import Template
 DB_PATH = 'backend/players.db'
 PLAYERS_PER_PAGE = 100
 
+# for memes <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+
 HTML_TEMPLATE = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,6 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recent Daily Stats</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <script>
         function searchPage(totalPages, sortBy) {
             const input = document.getElementById('page-input').value;
