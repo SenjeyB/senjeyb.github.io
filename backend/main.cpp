@@ -18,8 +18,7 @@ void fetchDataAndProcess() {
     curl = curl_easy_init();
     if (curl) {
         long long date = floor(time(NULL) / 60 / 60 / 24) - 1;
-        for(long long p = 1;; p++)
-        {
+        for(long long p = 1;; p++) {
             std::string readBuffer;
             std::string postData = "d=" + std::to_string(date) + "&p=" + std::to_string(p);
             
@@ -56,8 +55,7 @@ void fetchDataAndProcess() {
             curl_easy_cleanup(curl);
             curl = curl_easy_init();
         }
-        for(long long p = 1;; p++)
-        {
+        for(long long p = 1;; p++) {
             std::string readBuffer;
             std::string postData = "d=" + std::to_string(date) + "&p=" + std::to_string(p);
             
