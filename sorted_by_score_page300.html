@@ -2,775 +2,1150 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recent Daily Stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#7cb342">
+    <meta name="description" content="Daily Nuclear Throne leaderboard aggregated from Thronebutt since July 2024.">
+    <title>NT Daily Stats — Total Score · Page 300</title>
+    <link rel="icon" type="image/png" href="https://senjeyb.github.io/nt_tournament_stats/characters/yv.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <script>
-        function searchPage(totalPages, sortBy) {
-            const input = document.getElementById('page-input').value;
-            let page = parseInt(input, 10);
-            if (isNaN(page) || page < 1) {
-                page = 1;
-            } else if (page > totalPages) {
-                page = totalPages;
-            }
-            if (sortBy === 'score') {
-                window.location.href = 'page' + page + '.html';
-            } else if (sortBy === 'total_score') {
-                window.location.href = 'sorted_by_score_page' + page + '.html';
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
+        const TOTAL_PAGES = 478;
+        const SORT_BY = 'total_score';
+        function jumpToPage() {
             const input = document.getElementById('page-input');
-            input.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    searchPage(478, 'total_score');
-                }
+            let page = parseInt(input.value, 10);
+            if (isNaN(page) || page < 1) page = 1;
+            else if (page > TOTAL_PAGES) page = TOTAL_PAGES;
+            const prefix = SORT_BY === 'score' ? 'page' : 'sorted_by_score_page';
+            window.location.href = prefix + page + '.html';
+        }
+        function filterPlayers() {
+            const q = (document.getElementById('player-filter').value || '').trim().toLowerCase();
+            const rows = document.querySelectorAll('#players-table tbody tr');
+            let shown = 0;
+            rows.forEach(function (row) {
+                const name = (row.dataset.name || '').toLowerCase();
+                const match = !q || name.indexOf(q) !== -1;
+                row.style.display = match ? '' : 'none';
+                if (match) shown++;
             });
+            const count = document.getElementById('filter-count');
+            count.textContent = q ? (shown + ' match' + (shown === 1 ? '' : 'es') + ' on this page') : '';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const pageInput = document.getElementById('page-input');
+            if (pageInput) {
+                pageInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') jumpToPage(); });
+            }
+            const filter = document.getElementById('player-filter');
+            if (filter) filter.addEventListener('input', filterPlayers);
+            const burger = document.getElementById('burger');
+            const nav = document.getElementById('main-nav');
+            if (burger && nav) {
+                burger.addEventListener('click', function () {
+                    const open = nav.classList.toggle('open');
+                    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+            }
         });
     </script>
 </head>
 <body>
-    <h1>Recent Daily Stats</h1>
-    <p class="summary">Summary of Nuclear Throne daily runs starting from July 1st, 2024</p>
-    <p class="summary">Updates everyday at 3:00 UTC</p>
-    <p class="summary">Page 300 of 478</p>
-    <div class="sort-container">
-        <button onclick="window.location.href='index.html'">
-            Sort by Rating
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img class="brand-icon" src="https://senjeyb.github.io/nt_tournament_stats/characters/yv.png" alt="" width="32" height="32">
+            <span class="brand-text">
+                <span class="brand-title">NT Daily Stats</span>
+                <span class="brand-sub">Nuclear Throne · Thronebutt leaderboard</span>
+            </span>
+        </a>
+        <button id="burger" class="burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-nav">
+            <span></span><span></span><span></span>
         </button>
-    </div>
-    <div class="top-controls">
-        <div class="search-container">
-            <input type="text" id="page-input" placeholder="Select page" />
-            <button onclick="searchPage(478, 'total_score')">Go</button>
+        <nav id="main-nav" class="main-nav" aria-label="Main">
+            <a class="nav-link " href="index.html">Daily Rating</a>
+            <a class="nav-link active" href="sorted_by_score.html">Total Score</a>
+            <a class="nav-link external" href="https://senjeyb.github.io/nt_tournament_stats/" target="_blank" rel="noopener">NT Tournament <span aria-hidden="true">↗</span></a>
+            <a class="nav-link external" href="https://github.com/senjeyb/senjeyb.github.io" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Daily Run Standings</h1>
+            <p class="hero-sub">Aggregated daily run data from <a href="https://thronebutt.com" target="_blank" rel="noopener">thronebutt.com</a>, starting <strong>July 1st, 2024</strong>. Updates automatically every day at <strong>03:00 UTC</strong>.</p>
+        </section>
+
+        <section class="stats-grid" aria-label="Summary">
+            <div class="stat-card">
+                <span class="stat-label">Tracked Players</span>
+                <span class="stat-value">47,775</span>
+                <span class="stat-detail">since 2024-07-01</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Top Total Score</span>
+                <span class="stat-value">5,273,736</span>
+                <span class="stat-detail" title="gwen is okay">gwen is okay</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Sorted By</span>
+                <span class="stat-value">Total Score</span>
+                <a class="stat-link" href="index.html">
+                    Switch to Rating ↔
+                </a>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Page</span>
+                <span class="stat-value">300 / 478</span>
+                <span class="stat-detail">100 per page</span>
+            </div>
+        </section>
+
+        <section class="controls" aria-label="Page controls">
+            <div class="filter">
+                <input id="player-filter" type="search" placeholder="🔎 Filter players on this page…" autocomplete="off" aria-label="Filter players on this page" />
+                <span id="filter-count" class="filter-count" role="status" aria-live="polite"></span>
+            </div>
+            <div class="page-jump">
+                <label class="visually-hidden" for="page-input">Jump to page</label>
+                <input id="page-input" type="number" min="1" max="478" placeholder="Page #" />
+                <button type="button" onclick="jumpToPage()">Go</button>
+            </div>
+        </section>
+
+        <div class="table-wrap">
+            <table id="players-table">
+                <thead>
+                    <tr>
+                        <th class="col-rank" scope="col">Rank</th>
+                        <th class="col-name" scope="col">Name</th>
+                        <th class="col-rating " scope="col">Rating</th>
+                        <th class="col-score sorted" scope="col">Total Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <tr data-name="ses">
+                        <td class="col-rank">
+                            <span class="rank-num">29901</span>
+                            
+                        </td>
+                        <td class="col-name">ses</td>
+                        <td class="col-rating">357</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Fisherman">
+                        <td class="col-rank">
+                            <span class="rank-num">29902</span>
+                            
+                        </td>
+                        <td class="col-name">Fisherman</td>
+                        <td class="col-rating">349</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Gino Zain">
+                        <td class="col-rank">
+                            <span class="rank-num">29903</span>
+                            
+                        </td>
+                        <td class="col-name">Gino Zain</td>
+                        <td class="col-rating">360</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="guru">
+                        <td class="col-rank">
+                            <span class="rank-num">29904</span>
+                            
+                        </td>
+                        <td class="col-name">guru</td>
+                        <td class="col-rating">416</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Genni">
+                        <td class="col-rank">
+                            <span class="rank-num">29905</span>
+                            
+                        </td>
+                        <td class="col-name">Genni</td>
+                        <td class="col-rating">422</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="glazasty43">
+                        <td class="col-rank">
+                            <span class="rank-num">29906</span>
+                            
+                        </td>
+                        <td class="col-name">glazasty43</td>
+                        <td class="col-rating">502</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="painful_DRIPS">
+                        <td class="col-rank">
+                            <span class="rank-num">29907</span>
+                            
+                        </td>
+                        <td class="col-name">painful_DRIPS</td>
+                        <td class="col-rating">682</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Pete">
+                        <td class="col-rank">
+                            <span class="rank-num">29908</span>
+                            
+                        </td>
+                        <td class="col-name">Pete</td>
+                        <td class="col-rating">629</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="dashimaki">
+                        <td class="col-rank">
+                            <span class="rank-num">29909</span>
+                            
+                        </td>
+                        <td class="col-name">dashimaki</td>
+                        <td class="col-rating">630</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Fuku24">
+                        <td class="col-rank">
+                            <span class="rank-num">29910</span>
+                            
+                        </td>
+                        <td class="col-name">Fuku24</td>
+                        <td class="col-rating">556</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Mr Suicide">
+                        <td class="col-rank">
+                            <span class="rank-num">29911</span>
+                            
+                        </td>
+                        <td class="col-name">Mr Suicide</td>
+                        <td class="col-rating">524</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="floppydysk">
+                        <td class="col-rank">
+                            <span class="rank-num">29912</span>
+                            
+                        </td>
+                        <td class="col-name">floppydysk</td>
+                        <td class="col-rating">591</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Abigor">
+                        <td class="col-rank">
+                            <span class="rank-num">29913</span>
+                            
+                        </td>
+                        <td class="col-name">Abigor</td>
+                        <td class="col-rating">408</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="xkyzarx">
+                        <td class="col-rank">
+                            <span class="rank-num">29914</span>
+                            
+                        </td>
+                        <td class="col-name">xkyzarx</td>
+                        <td class="col-rating">475</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="ghoularth">
+                        <td class="col-rank">
+                            <span class="rank-num">29915</span>
+                            
+                        </td>
+                        <td class="col-name">ghoularth</td>
+                        <td class="col-rating">475</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="SiCORTHI">
+                        <td class="col-rank">
+                            <span class="rank-num">29916</span>
+                            
+                        </td>
+                        <td class="col-name">SiCORTHI</td>
+                        <td class="col-rating">404</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="logss">
+                        <td class="col-rank">
+                            <span class="rank-num">29917</span>
+                            
+                        </td>
+                        <td class="col-name">logss</td>
+                        <td class="col-rating">519</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="podoben bobu">
+                        <td class="col-rank">
+                            <span class="rank-num">29918</span>
+                            
+                        </td>
+                        <td class="col-name">podoben bobu</td>
+                        <td class="col-rating">533</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Моцно?">
+                        <td class="col-rank">
+                            <span class="rank-num">29919</span>
+                            
+                        </td>
+                        <td class="col-name">Моцно?</td>
+                        <td class="col-rating">502</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="mvq">
+                        <td class="col-rank">
+                            <span class="rank-num">29920</span>
+                            
+                        </td>
+                        <td class="col-name">mvq</td>
+                        <td class="col-rating">606</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Visavion">
+                        <td class="col-rank">
+                            <span class="rank-num">29921</span>
+                            
+                        </td>
+                        <td class="col-name">Visavion</td>
+                        <td class="col-rating">523</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="forsworn">
+                        <td class="col-rank">
+                            <span class="rank-num">29922</span>
+                            
+                        </td>
+                        <td class="col-name">forsworn</td>
+                        <td class="col-rating">523</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="CreamSoda">
+                        <td class="col-rank">
+                            <span class="rank-num">29923</span>
+                            
+                        </td>
+                        <td class="col-name">CreamSoda</td>
+                        <td class="col-rating">319</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Hankhubert">
+                        <td class="col-rank">
+                            <span class="rank-num">29924</span>
+                            
+                        </td>
+                        <td class="col-name">Hankhubert</td>
+                        <td class="col-rating">465</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Sequester Grundleplith M.D.">
+                        <td class="col-rank">
+                            <span class="rank-num">29925</span>
+                            
+                        </td>
+                        <td class="col-name">Sequester Grundleplith M.D.</td>
+                        <td class="col-rating">356</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="mari02727">
+                        <td class="col-rank">
+                            <span class="rank-num">29926</span>
+                            
+                        </td>
+                        <td class="col-name">mari02727</td>
+                        <td class="col-rating">364</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="muappa">
+                        <td class="col-rank">
+                            <span class="rank-num">29927</span>
+                            
+                        </td>
+                        <td class="col-name">muappa</td>
+                        <td class="col-rating">432</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="beanbeam">
+                        <td class="col-rank">
+                            <span class="rank-num">29928</span>
+                            
+                        </td>
+                        <td class="col-name">beanbeam</td>
+                        <td class="col-rating">344</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="OWL">
+                        <td class="col-rank">
+                            <span class="rank-num">29929</span>
+                            
+                        </td>
+                        <td class="col-name">OWL</td>
+                        <td class="col-rating">418</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="DannyRosewell">
+                        <td class="col-rank">
+                            <span class="rank-num">29930</span>
+                            
+                        </td>
+                        <td class="col-name">DannyRosewell</td>
+                        <td class="col-rating">418</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="leolecrapo">
+                        <td class="col-rank">
+                            <span class="rank-num">29931</span>
+                            
+                        </td>
+                        <td class="col-name">leolecrapo</td>
+                        <td class="col-rating">534</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Muddy">
+                        <td class="col-rank">
+                            <span class="rank-num">29932</span>
+                            
+                        </td>
+                        <td class="col-name">Muddy</td>
+                        <td class="col-rating">422</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="gela">
+                        <td class="col-rank">
+                            <span class="rank-num">29933</span>
+                            
+                        </td>
+                        <td class="col-name">gela</td>
+                        <td class="col-rating">304</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="I love girls">
+                        <td class="col-rank">
+                            <span class="rank-num">29934</span>
+                            
+                        </td>
+                        <td class="col-name">I love girls</td>
+                        <td class="col-rating">430</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="ztborispobeshymow">
+                        <td class="col-rank">
+                            <span class="rank-num">29935</span>
+                            
+                        </td>
+                        <td class="col-name">ztborispobeshymow</td>
+                        <td class="col-rating">422</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="PanBimbo">
+                        <td class="col-rank">
+                            <span class="rank-num">29936</span>
+                            
+                        </td>
+                        <td class="col-name">PanBimbo</td>
+                        <td class="col-rating">560</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Fel">
+                        <td class="col-rank">
+                            <span class="rank-num">29937</span>
+                            
+                        </td>
+                        <td class="col-name">Fel</td>
+                        <td class="col-rating">560</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Diepap">
+                        <td class="col-rank">
+                            <span class="rank-num">29938</span>
+                            
+                        </td>
+                        <td class="col-name">Diepap</td>
+                        <td class="col-rating">450</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Literally A Bot">
+                        <td class="col-rank">
+                            <span class="rank-num">29939</span>
+                            
+                        </td>
+                        <td class="col-name">Literally A Bot</td>
+                        <td class="col-rating">448</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="よ～し">
+                        <td class="col-rank">
+                            <span class="rank-num">29940</span>
+                            
+                        </td>
+                        <td class="col-name">よ～し</td>
+                        <td class="col-rating">461</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="Ker Pouic-pouic">
+                        <td class="col-rank">
+                            <span class="rank-num">29941</span>
+                            
+                        </td>
+                        <td class="col-name">Ker Pouic-pouic</td>
+                        <td class="col-rating">359</td>
+                        <td class="col-score">157</td>
+                    </tr>
+                
+                    <tr data-name="bskn">
+                        <td class="col-rank">
+                            <span class="rank-num">29942</span>
+                            
+                        </td>
+                        <td class="col-name">bskn</td>
+                        <td class="col-rating">359</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Ioase">
+                        <td class="col-rank">
+                            <span class="rank-num">29943</span>
+                            
+                        </td>
+                        <td class="col-name">Ioase</td>
+                        <td class="col-rating">359</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="troll_king2000">
+                        <td class="col-rank">
+                            <span class="rank-num">29944</span>
+                            
+                        </td>
+                        <td class="col-name">troll_king2000</td>
+                        <td class="col-rating">154</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="">
+                        <td class="col-rank">
+                            <span class="rank-num">29945</span>
+                            
+                        </td>
+                        <td class="col-name"></td>
+                        <td class="col-rating">432</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Night Hawk">
+                        <td class="col-rank">
+                            <span class="rank-num">29946</span>
+                            
+                        </td>
+                        <td class="col-name">Night Hawk</td>
+                        <td class="col-rating">277</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="homeropaturuza">
+                        <td class="col-rank">
+                            <span class="rank-num">29947</span>
+                            
+                        </td>
+                        <td class="col-name">homeropaturuza</td>
+                        <td class="col-rating">277</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="">
+                        <td class="col-rank">
+                            <span class="rank-num">29948</span>
+                            
+                        </td>
+                        <td class="col-name"></td>
+                        <td class="col-rating">410</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="">
+                        <td class="col-rank">
+                            <span class="rank-num">29949</span>
+                            
+                        </td>
+                        <td class="col-name"></td>
+                        <td class="col-rating">253</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="[KladMen]">
+                        <td class="col-rank">
+                            <span class="rank-num">29950</span>
+                            
+                        </td>
+                        <td class="col-name">[KladMen]</td>
+                        <td class="col-rating">385</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Slashik">
+                        <td class="col-rank">
+                            <span class="rank-num">29951</span>
+                            
+                        </td>
+                        <td class="col-name">Slashik</td>
+                        <td class="col-rating">268</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Valkyrie">
+                        <td class="col-rank">
+                            <span class="rank-num">29952</span>
+                            
+                        </td>
+                        <td class="col-name">Valkyrie</td>
+                        <td class="col-rating">334</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="wilt">
+                        <td class="col-rank">
+                            <span class="rank-num">29953</span>
+                            
+                        </td>
+                        <td class="col-name">wilt</td>
+                        <td class="col-rating">276</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="tsvyakh">
+                        <td class="col-rank">
+                            <span class="rank-num">29954</span>
+                            
+                        </td>
+                        <td class="col-name">tsvyakh</td>
+                        <td class="col-rating">515</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="GAY DWARF">
+                        <td class="col-rank">
+                            <span class="rank-num">29955</span>
+                            
+                        </td>
+                        <td class="col-name">GAY DWARF</td>
+                        <td class="col-rating">360</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="">
+                        <td class="col-rank">
+                            <span class="rank-num">29956</span>
+                            
+                        </td>
+                        <td class="col-name"></td>
+                        <td class="col-rating">456</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="skeletonpsychologist">
+                        <td class="col-rank">
+                            <span class="rank-num">29957</span>
+                            
+                        </td>
+                        <td class="col-name">skeletonpsychologist</td>
+                        <td class="col-rating">447</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="">
+                        <td class="col-rank">
+                            <span class="rank-num">29958</span>
+                            
+                        </td>
+                        <td class="col-name"></td>
+                        <td class="col-rating">229</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Sentient_Toilet_">
+                        <td class="col-rank">
+                            <span class="rank-num">29959</span>
+                            
+                        </td>
+                        <td class="col-name">Sentient_Toilet_</td>
+                        <td class="col-rating">483</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="j.vos90">
+                        <td class="col-rank">
+                            <span class="rank-num">29960</span>
+                            
+                        </td>
+                        <td class="col-name">j.vos90</td>
+                        <td class="col-rating">319</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Eugen Vektor">
+                        <td class="col-rank">
+                            <span class="rank-num">29961</span>
+                            
+                        </td>
+                        <td class="col-name">Eugen Vektor</td>
+                        <td class="col-rating">446</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="the sentinel">
+                        <td class="col-rank">
+                            <span class="rank-num">29962</span>
+                            
+                        </td>
+                        <td class="col-name">the sentinel</td>
+                        <td class="col-rating">484</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="akkoima">
+                        <td class="col-rank">
+                            <span class="rank-num">29963</span>
+                            
+                        </td>
+                        <td class="col-name">akkoima</td>
+                        <td class="col-rating">319</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="snackle">
+                        <td class="col-rank">
+                            <span class="rank-num">29964</span>
+                            
+                        </td>
+                        <td class="col-name">snackle</td>
+                        <td class="col-rating">248</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="IShowPounds">
+                        <td class="col-rank">
+                            <span class="rank-num">29965</span>
+                            
+                        </td>
+                        <td class="col-name">IShowPounds</td>
+                        <td class="col-rating">267</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="wakasto">
+                        <td class="col-rank">
+                            <span class="rank-num">29966</span>
+                            
+                        </td>
+                        <td class="col-name">wakasto</td>
+                        <td class="col-rating">412</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="perrin.marjo">
+                        <td class="col-rank">
+                            <span class="rank-num">29967</span>
+                            
+                        </td>
+                        <td class="col-name">perrin.marjo</td>
+                        <td class="col-rating">417</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="XanxBoy">
+                        <td class="col-rank">
+                            <span class="rank-num">29968</span>
+                            
+                        </td>
+                        <td class="col-name">XanxBoy</td>
+                        <td class="col-rating">415</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="goodnight_nior">
+                        <td class="col-rank">
+                            <span class="rank-num">29969</span>
+                            
+                        </td>
+                        <td class="col-name">goodnight_nior</td>
+                        <td class="col-rating">375</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Mecanti">
+                        <td class="col-rank">
+                            <span class="rank-num">29970</span>
+                            
+                        </td>
+                        <td class="col-name">Mecanti</td>
+                        <td class="col-rating">354</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="BIGSHULAN">
+                        <td class="col-rank">
+                            <span class="rank-num">29971</span>
+                            
+                        </td>
+                        <td class="col-name">BIGSHULAN</td>
+                        <td class="col-rating">428</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Starbreaker2.0">
+                        <td class="col-rank">
+                            <span class="rank-num">29972</span>
+                            
+                        </td>
+                        <td class="col-name">Starbreaker2.0</td>
+                        <td class="col-rating">195</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="yeehaw">
+                        <td class="col-rank">
+                            <span class="rank-num">29973</span>
+                            
+                        </td>
+                        <td class="col-name">yeehaw</td>
+                        <td class="col-rating">493</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="TeVees">
+                        <td class="col-rank">
+                            <span class="rank-num">29974</span>
+                            
+                        </td>
+                        <td class="col-name">TeVees</td>
+                        <td class="col-rating">341</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="gooner? hardly know her">
+                        <td class="col-rank">
+                            <span class="rank-num">29975</span>
+                            
+                        </td>
+                        <td class="col-name">gooner? hardly know her</td>
+                        <td class="col-rating">319</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Ferret Playing PS4 #KillTF2">
+                        <td class="col-rank">
+                            <span class="rank-num">29976</span>
+                            
+                        </td>
+                        <td class="col-name">Ferret Playing PS4 #KillTF2</td>
+                        <td class="col-rating">484</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Vince">
+                        <td class="col-rank">
+                            <span class="rank-num">29977</span>
+                            
+                        </td>
+                        <td class="col-name">Vince</td>
+                        <td class="col-rating">443</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="ElKiwiMexicano">
+                        <td class="col-rank">
+                            <span class="rank-num">29978</span>
+                            
+                        </td>
+                        <td class="col-name">ElKiwiMexicano</td>
+                        <td class="col-rating">358</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Axunya">
+                        <td class="col-rank">
+                            <span class="rank-num">29979</span>
+                            
+                        </td>
+                        <td class="col-name">Axunya</td>
+                        <td class="col-rating">464</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Local Skinwalker">
+                        <td class="col-rank">
+                            <span class="rank-num">29980</span>
+                            
+                        </td>
+                        <td class="col-name">Local Skinwalker</td>
+                        <td class="col-rating">678</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="✪The Original Homie">
+                        <td class="col-rank">
+                            <span class="rank-num">29981</span>
+                            
+                        </td>
+                        <td class="col-name">✪The Original Homie</td>
+                        <td class="col-rating">746</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="sncxxxx">
+                        <td class="col-rank">
+                            <span class="rank-num">29982</span>
+                            
+                        </td>
+                        <td class="col-name">sncxxxx</td>
+                        <td class="col-rating">631</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="NombreOcupadoXd">
+                        <td class="col-rank">
+                            <span class="rank-num">29983</span>
+                            
+                        </td>
+                        <td class="col-name">NombreOcupadoXd</td>
+                        <td class="col-rating">506</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Suvlaki">
+                        <td class="col-rank">
+                            <span class="rank-num">29984</span>
+                            
+                        </td>
+                        <td class="col-name">Suvlaki</td>
+                        <td class="col-rating">627</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="ФУГАС">
+                        <td class="col-rank">
+                            <span class="rank-num">29985</span>
+                            
+                        </td>
+                        <td class="col-name">ФУГАС</td>
+                        <td class="col-rating">455</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="CFrank">
+                        <td class="col-rank">
+                            <span class="rank-num">29986</span>
+                            
+                        </td>
+                        <td class="col-name">CFrank</td>
+                        <td class="col-rating">587</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Billy Mays">
+                        <td class="col-rank">
+                            <span class="rank-num">29987</span>
+                            
+                        </td>
+                        <td class="col-name">Billy Mays</td>
+                        <td class="col-rating">403</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Pelmeni">
+                        <td class="col-rank">
+                            <span class="rank-num">29988</span>
+                            
+                        </td>
+                        <td class="col-name">Pelmeni</td>
+                        <td class="col-rating">468</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Aki">
+                        <td class="col-rank">
+                            <span class="rank-num">29989</span>
+                            
+                        </td>
+                        <td class="col-name">Aki</td>
+                        <td class="col-rating">433</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Yingir">
+                        <td class="col-rank">
+                            <span class="rank-num">29990</span>
+                            
+                        </td>
+                        <td class="col-name">Yingir</td>
+                        <td class="col-rating">453</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="EspanyaMataca">
+                        <td class="col-rank">
+                            <span class="rank-num">29991</span>
+                            
+                        </td>
+                        <td class="col-name">EspanyaMataca</td>
+                        <td class="col-rating">457</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Moonwave ◘">
+                        <td class="col-rank">
+                            <span class="rank-num">29992</span>
+                            
+                        </td>
+                        <td class="col-name">Moonwave ◘</td>
+                        <td class="col-rating">558</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Tyrannosaurus Pecs">
+                        <td class="col-rank">
+                            <span class="rank-num">29993</span>
+                            
+                        </td>
+                        <td class="col-name">Tyrannosaurus Pecs</td>
+                        <td class="col-rating">602</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="maugatocs">
+                        <td class="col-rank">
+                            <span class="rank-num">29994</span>
+                            
+                        </td>
+                        <td class="col-name">maugatocs</td>
+                        <td class="col-rating">519</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="Polushka">
+                        <td class="col-rank">
+                            <span class="rank-num">29995</span>
+                            
+                        </td>
+                        <td class="col-name">Polushka</td>
+                        <td class="col-rating">519</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="if you want it then you have to">
+                        <td class="col-rank">
+                            <span class="rank-num">29996</span>
+                            
+                        </td>
+                        <td class="col-name">if you want it then you have to</td>
+                        <td class="col-rating">548</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="BEARHEMOTH">
+                        <td class="col-rank">
+                            <span class="rank-num">29997</span>
+                            
+                        </td>
+                        <td class="col-name">BEARHEMOTH</td>
+                        <td class="col-rating">404</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="无色水母">
+                        <td class="col-rank">
+                            <span class="rank-num">29998</span>
+                            
+                        </td>
+                        <td class="col-name">无色水母</td>
+                        <td class="col-rating">459</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="4legro_">
+                        <td class="col-rank">
+                            <span class="rank-num">29999</span>
+                            
+                        </td>
+                        <td class="col-name">4legro_</td>
+                        <td class="col-rating">318</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                    <tr data-name="wicksmith16">
+                        <td class="col-rank">
+                            <span class="rank-num">30000</span>
+                            
+                        </td>
+                        <td class="col-name">wicksmith16</td>
+                        <td class="col-rating">462</td>
+                        <td class="col-score">156</td>
+                    </tr>
+                
+                </tbody>
+            </table>
         </div>
-        <div class="navigation">
+
+        <nav class="pager" aria-label="Pagination">
             
-                <a href="sorted_by_score_page299.html">Previous</a>
+                <a class="pager-btn" rel="prev" href="sorted_by_score_page299.html">← Previous</a>
             
+            <span class="pager-info">Page <strong>300</strong> of 478</span>
             
-                <a href="sorted_by_score_page301.html">Next</a>
+                <a class="pager-btn" rel="next" href="sorted_by_score_page301.html">Next →</a>
             
-        </div>
-    </div>
-    <table>
-        <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Total Score</th>
-        </tr>
-        
-        <tr>
-            <td>29901</td>
-            <td>ses</td>
-            <td>357</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29902</td>
-            <td>Fisherman</td>
-            <td>349</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29903</td>
-            <td>Gino Zain</td>
-            <td>360</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29904</td>
-            <td>guru</td>
-            <td>416</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29905</td>
-            <td>Genni</td>
-            <td>422</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29906</td>
-            <td>glazasty43</td>
-            <td>502</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29907</td>
-            <td>painful_DRIPS</td>
-            <td>682</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29908</td>
-            <td>Pete</td>
-            <td>629</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29909</td>
-            <td>dashimaki</td>
-            <td>630</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29910</td>
-            <td>Fuku24</td>
-            <td>556</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29911</td>
-            <td>Mr Suicide</td>
-            <td>524</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29912</td>
-            <td>floppydysk</td>
-            <td>591</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29913</td>
-            <td>Abigor</td>
-            <td>408</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29914</td>
-            <td>xkyzarx</td>
-            <td>475</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29915</td>
-            <td>ghoularth</td>
-            <td>475</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29916</td>
-            <td>SiCORTHI</td>
-            <td>404</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29917</td>
-            <td>logss</td>
-            <td>519</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29918</td>
-            <td>podoben bobu</td>
-            <td>533</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29919</td>
-            <td>Моцно?</td>
-            <td>502</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29920</td>
-            <td>mvq</td>
-            <td>606</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29921</td>
-            <td>Visavion</td>
-            <td>523</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29922</td>
-            <td>forsworn</td>
-            <td>523</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29923</td>
-            <td>CreamSoda</td>
-            <td>319</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29924</td>
-            <td>Hankhubert</td>
-            <td>465</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29925</td>
-            <td>Sequester Grundleplith M.D.</td>
-            <td>356</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29926</td>
-            <td>mari02727</td>
-            <td>364</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29927</td>
-            <td>muappa</td>
-            <td>432</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29928</td>
-            <td>beanbeam</td>
-            <td>344</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29929</td>
-            <td>OWL</td>
-            <td>418</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29930</td>
-            <td>DannyRosewell</td>
-            <td>418</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29931</td>
-            <td>leolecrapo</td>
-            <td>534</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29932</td>
-            <td>Muddy</td>
-            <td>422</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29933</td>
-            <td>gela</td>
-            <td>304</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29934</td>
-            <td>I love girls</td>
-            <td>430</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29935</td>
-            <td>ztborispobeshymow</td>
-            <td>422</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29936</td>
-            <td>PanBimbo</td>
-            <td>560</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29937</td>
-            <td>Fel</td>
-            <td>560</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29938</td>
-            <td>Diepap</td>
-            <td>450</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29939</td>
-            <td>Literally A Bot</td>
-            <td>448</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29940</td>
-            <td>よ～し</td>
-            <td>461</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29941</td>
-            <td>Ker Pouic-pouic</td>
-            <td>359</td>
-            <td>157</td>
-        </tr>
-        
-        <tr>
-            <td>29942</td>
-            <td>bskn</td>
-            <td>359</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29943</td>
-            <td>Ioase</td>
-            <td>359</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29944</td>
-            <td>troll_king2000</td>
-            <td>154</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29945</td>
-            <td></td>
-            <td>432</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29946</td>
-            <td>Night Hawk</td>
-            <td>277</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29947</td>
-            <td>homeropaturuza</td>
-            <td>277</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29948</td>
-            <td></td>
-            <td>410</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29949</td>
-            <td></td>
-            <td>253</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29950</td>
-            <td>[KladMen]</td>
-            <td>385</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29951</td>
-            <td>Slashik</td>
-            <td>268</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29952</td>
-            <td>Valkyrie</td>
-            <td>334</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29953</td>
-            <td>wilt</td>
-            <td>276</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29954</td>
-            <td>tsvyakh</td>
-            <td>515</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29955</td>
-            <td>GAY DWARF</td>
-            <td>360</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29956</td>
-            <td></td>
-            <td>456</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29957</td>
-            <td>skeletonpsychologist</td>
-            <td>447</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29958</td>
-            <td></td>
-            <td>229</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29959</td>
-            <td>Sentient_Toilet_</td>
-            <td>483</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29960</td>
-            <td>j.vos90</td>
-            <td>319</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29961</td>
-            <td>Eugen Vektor</td>
-            <td>446</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29962</td>
-            <td>the sentinel</td>
-            <td>484</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29963</td>
-            <td>akkoima</td>
-            <td>319</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29964</td>
-            <td>snackle</td>
-            <td>248</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29965</td>
-            <td>IShowPounds</td>
-            <td>267</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29966</td>
-            <td>wakasto</td>
-            <td>412</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29967</td>
-            <td>perrin.marjo</td>
-            <td>417</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29968</td>
-            <td>XanxBoy</td>
-            <td>415</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29969</td>
-            <td>goodnight_nior</td>
-            <td>375</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29970</td>
-            <td>Mecanti</td>
-            <td>354</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29971</td>
-            <td>BIGSHULAN</td>
-            <td>428</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29972</td>
-            <td>Starbreaker2.0</td>
-            <td>195</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29973</td>
-            <td>yeehaw</td>
-            <td>493</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29974</td>
-            <td>TeVees</td>
-            <td>341</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29975</td>
-            <td>gooner? hardly know her</td>
-            <td>319</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29976</td>
-            <td>Ferret Playing PS4 #KillTF2</td>
-            <td>484</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29977</td>
-            <td>Vince</td>
-            <td>443</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29978</td>
-            <td>ElKiwiMexicano</td>
-            <td>358</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29979</td>
-            <td>Axunya</td>
-            <td>464</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29980</td>
-            <td>Local Skinwalker</td>
-            <td>678</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29981</td>
-            <td>✪The Original Homie</td>
-            <td>746</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29982</td>
-            <td>sncxxxx</td>
-            <td>631</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29983</td>
-            <td>NombreOcupadoXd</td>
-            <td>506</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29984</td>
-            <td>Suvlaki</td>
-            <td>627</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29985</td>
-            <td>ФУГАС</td>
-            <td>455</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29986</td>
-            <td>CFrank</td>
-            <td>587</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29987</td>
-            <td>Billy Mays</td>
-            <td>403</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29988</td>
-            <td>Pelmeni</td>
-            <td>468</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29989</td>
-            <td>Aki</td>
-            <td>433</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29990</td>
-            <td>Yingir</td>
-            <td>453</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29991</td>
-            <td>EspanyaMataca</td>
-            <td>457</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29992</td>
-            <td>Moonwave ◘</td>
-            <td>558</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29993</td>
-            <td>Tyrannosaurus Pecs</td>
-            <td>602</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29994</td>
-            <td>maugatocs</td>
-            <td>519</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29995</td>
-            <td>Polushka</td>
-            <td>519</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29996</td>
-            <td>if you want it then you have to</td>
-            <td>548</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29997</td>
-            <td>BEARHEMOTH</td>
-            <td>404</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29998</td>
-            <td>无色水母</td>
-            <td>459</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>29999</td>
-            <td>4legro_</td>
-            <td>318</td>
-            <td>156</td>
-        </tr>
-        
-        <tr>
-            <td>30000</td>
-            <td>wicksmith16</td>
-            <td>462</td>
-            <td>156</td>
-        </tr>
-        
-    </table>
-    <p class="summary">Page 300 of 478</p>
-    <div class="navigation">
-        
-            <a href="sorted_by_score_page299.html">Previous</a>
-        
-        
-            <a href="sorted_by_score_page301.html">Next</a>
-        
-    </div>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p>Data from <a href="https://thronebutt.com" target="_blank" rel="noopener">thronebutt.com</a> · Built by <a href="https://github.com/senjeyb" target="_blank" rel="noopener">senjeyb</a></p>
+        <p>Companion project: <a href="https://senjeyb.github.io/nt_tournament_stats/" target="_blank" rel="noopener">NT: Wasteland Derby — Tournament Stats</a></p>
+    </footer>
 </body>
 </html>
